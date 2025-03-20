@@ -1,0 +1,33 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul, li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1, h2 {
+    width: 50%;
+    margin: auto;
+}
+form {
+    width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+
+    button#añadirTarea {
+        /* margin: auto; */
+        width: fit-content;
+    }
+}
+
+.negrita {
+    font-weight: bold;
+}
