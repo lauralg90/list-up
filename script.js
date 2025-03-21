@@ -51,7 +51,7 @@ function añadirTarea () {
 /* AÑADIR TAREA  ===================================================================================================  */
 
 let inputTarea = document.querySelector("input#tarea");
-let botonAñadir = document.querySelector("button#anadir");
+let botonAñadir = document.querySelector("button#añadir");
 let lista = document.querySelector("ol#listaTareas");
 
 // La tarea se añade al clicar el botón "Añadir" o presionar "Enter":
