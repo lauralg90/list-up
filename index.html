@@ -1,43 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de tareas</title>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>List-Up</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
+  </head>
 
-    <h1>List-up</h1>
+  <body>
 
-    <form action="">
-
-        <label for="tarea">Nueva tarea</label>
-        <input type="text" name="tarea" id="tarea" placeholder="" autofocus autocomplete="off">
-
-        <input type="checkbox" name="importante" id="importante">
-        <label for="importante">Importante</label>
-        
-        <button id="anadir">Añadir a mi lista</button>
-
-        <label for="buscador">Buscar tarea</label>
-        <input type="search" name="buscador" id="buscador" placeholder="">
-
-    </form>
-
-    <h2>Mis tareas</h2>
-
-    <ol id="listaTareas">
-    </ol>
+    <!-- HEADER   ---------------------------------------------------------------------------------------------------->
+    <header id="header">
+        <h1>List-Up</h1>       
+    </header>
     
+    <!-- MAIN   ------------------------------------------------------------------------------------------------------>
+    <main id="main">
 
+        <!-- FORMULARIO AÑADIR TAREA  -------------------------------------------------------------------------------->
+        <section id="añadirTarea">
+            <form action="">
+                <input type="text" name="tarea" id="tarea" placeholder="Nueva tarea" autofocus autocomplete="off">
+        
+                <input type="checkbox" name="importante" id="importante">
+                <label for="importante">Importante</label>
+                
+                <button id="anadir">Añadir a mi lista</button>
+            </form>
+        </section>
 
+        <!-- LISTA DE TAREAS --------------------------------------------------------------------------------------->
+        <section id="tareas">
+            <h2>No tienes tareas pendientes</h2>
 
+            <form action="">
+                <input type="search" name="buscador" id="buscador" placeholder="Buscar tarea">
+            </form>
 
+            <ol id="listaTareas">
+            </ol>
+        </section>
+
+    </main>
+    
+    <!-- FOOTER   -------------------------------------------------------------------------------------------------->
 
 
     <script src="script.js"></script>
 
-</body>
+  </body>
 </html>

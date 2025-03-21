@@ -1,32 +1,63 @@
+/* RESET  --------------------------------------------------------------------------------------------------------- */
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-ul, li {
+ul, ol, li {
     list-style: none;
 }
 
-a {
-    text-decoration: none;
+html, body {
+    font-size: 16px;
+}
+
+/* TIPOGRAFÍA  -------------------------------------------------------------------------------------------------- */
+
+body, html {
+    font-family: "Roboto", sans-serif;
 }
 
 h1, h2 {
-    width: 50%;
-    margin: auto;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
 }
-form {
-    width: 50%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
 
-    button#añadirTarea {
-        /* margin: auto; */
-        width: fit-content;
-    }
+/* VARIABLES  --------------------------------------------------------------------------------------------------- */
+
+:root {
+    --negro: #333333;
+    --fondo: #F7F7F7;
+    --card1: #DCD0EC;
+    --card2: #F0E5E5;
+    --card3: #E9E1CE;
+    --card4: #D2D6DF;
+
+    /* BREAKPOINT */
+    --movil: 768px; /* De 0 a 768 */
 }
+
+/* ESTILOS GENERALES   ----------------------------------------------------------------------------------------- */
+
+body {
+    background-color: var(--fondo);
+}
+
+h1, h2, p, ol, li, span, button, label {
+    color: var(--negro);
+}
+
+/* HEADER  ----------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+/* DOM  --------------------------------------------------------------------------------------------------------- */
 
 .negrita {
     font-weight: bold;
