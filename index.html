@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="estilo.css">
   </head>
 
@@ -20,7 +24,7 @@
 
     <!-- HEADER   ---------------------------------------------------------------------------------------------------->
     <header id="header">
-        <div>
+        <div class="anchura">
           <h1>List-Up</h1>
         </div>            
     </header>
@@ -30,27 +34,27 @@
 
         <!-- AÑADIR TAREA  ------------------------------------------------------------------------------------------->
         <section id="añadirTarea" class="container">
-          <form action="">
-              <input type="text" name="tarea" id="tarea" placeholder="Nueva tarea" autofocus autocomplete="off">
+          <form action="" class="anchura">
+              <input type="text" name="tarea" placeholder="Nueva tarea" autofocus autocomplete="off" class="input">
               <div>
                 <div>
-                  <input type="checkbox" name="importante" id="importante">
+                  <input type="checkbox" name="importante" id="importante" disabled class="input">
                   <label for="importante">Marcar como importante</label>
                 </div>
-                <button id="añadir" class="boton">Añadir a mi lista</button>
+                <button id="añadir" class="boton" disabled>Añadir a mi lista</button>
               </div>
           </form>
         </section>
 
         <!-- LISTA DE TAREAS --------------------------------------------------------------------------------------->
         <section id="tareas" class="container">
-          <h2>No tienes tareas pendientes</h2>
-          <form>
-              <input type="search" name="buscador" id="buscador" placeholder="Buscar tarea">
+          <h2 class="anchura">No tienes tareas pendientes</h2>
+          <form class="anchura">
+              <input type="search" name="buscador" placeholder="Buscar tarea" class="input">
           </form>
-          <ol id="listaTareas"></ol>
+          <ol id="listaTareas" class="anchura"></ol>
       </section>
-      
+
     </main>
 
     <script src="script.js"></script>
