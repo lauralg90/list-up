@@ -41,9 +41,8 @@ function añadirTarea () {
         lista.appendChild(tarea);       
 
 
-        // Vaciar inputTarea
+        // 3. DEVOLVER FORM A SU ESTADO ORIGINAL
         inputTarea.value = "";
-        // Desmarcar checkbox importante
         importante.checked = false;
     }   
 };
@@ -78,7 +77,8 @@ inputTarea.addEventListener("keydown", (e) => {
 
 /* CONTADOR DE TAREAS  ============================================================================================  */
 
-// Ubicar al lado del título "Mi lista de tareas"
+// "Tienes 12 tareas pendientes" Ubicar al lado del título "Mi lista de tareas"
+// Debe actualizarse al añadir y eliminar tareas
 
 
 /* GESTIÓN DE TAREAS  =============================================================================================  */
@@ -93,15 +93,82 @@ lista.addEventListener("click", (e) => {
     }
 
     if(e.target.innerText === "Modificar"){
+
+        // 1. SELECCIONAR ELEMENTOS
         // Seleccionar el li
         let tarea = e.target.parentElement.parentElement;
         // Seleccionar el nombre de la tarea (lo había ubicado en un span)
         let nombreTarea = tarea.querySelector("span");
-        let nuevoTexto = prompt("Modifica el nombre de tu tarea", nombreTarea.textContent);
+
+        /* let nuevoTexto = prompt("Modifica el nombre de tu tarea", nombreTarea.textContent);
         // El nombre de la tarea no se modifica si el usuario clica cancelar o da un valor vacío
         if(nuevoTexto !== null && nuevoTexto.trim() !== ""){
             nombreTarea.textContent = nuevoTexto.trim();
-        }       
+        } */
+
+        // 2. CREAR FORM DE MODIFICACIÓN
+        let formModificar = document.createElement("form");
+        // Input
+        let inputModificar = document.createElement("input");
+        inputModificar.setAttribute("type", "text");
+        inputModificar.setAttribute("placeholder", nombreTarea.textContent);
+        // Botones
+        let botonModificar = document.createElement("button");
+        botonModificar.textContent = "Guardar";
+        let botonCancelar = document.createElement("button");
+        botonCancelar.textContent = "Cancelar";
+        // Ubicar input y boton en el form
+        formModificar.appendChild(inputModificar);
+        formModificar.appendChild(botonModificar);
+        formModificar.appendChild(botonCancelar);   
+        
+
+        // 3. UBICAR FORM DE MODIFICACIÓN
+        // Reemplazar tarea por form de manera temporal, mientras el usuario realiza la modificación
+        tarea.style.display = "none";
+        tarea.insertAdjacentElement("afterend", formModificar);
+        inputModificar.focus();
+        // Autofocus es una propiedad html, .focus() es un método del DOM
+        // El comportamiento que queremos darle a un nuevo elemento se debe poner después de que el elemento exista en el DOM, es decir, antes de ubicarlo
+
+        // 4. EVENTO FORM MODIFICACIÓN
+        botonModificar.addEventListener("click", (e) => {
+            e.preventDefault();
+            nuevoNombre = inputModificar.value;
+            if(nuevoNombre.trim() !== ""){
+                nombreTarea.textContent = nuevoNombre;
+                formModificar.style.display = "none";
+                tarea.style.display = "block";
+            }
+        });
+        // Comportamiento por defecto del formulario hace que al presionar Enter se modifique la tarea porque el botón Guardar va después del input.
+
+        botonCancelar.addEventListener("click", (e) => {
+            e.preventDefault();
+            formModificar.style.display = "none";
+            tarea.style.display = "block";
+        });
+        // Se añade botón ESC para salir del form de modificación
+        formModificar.addEventListener("keydown", (e) => {
+            console.log(e);
+            if(e.key === "Escape"){
+                formModificar.style.display = "none";
+                tarea.style.display = "block";
+            }
+        });
+        
+
+        
+        
+
+
+        let nuevoNombre = inputModificar.value;
+        if(nuevoNombre.trim() !== ""){
+            nombreTarea.textContent = nuevoNombre;
+        }
+        
+        
+        
     }
 
     if(e.target.innerText === "Importante"){
