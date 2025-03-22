@@ -26,11 +26,13 @@ input, button {
     appearance: none;
 }
 
+
 /* TIPOGRAFÍA  -------------------------------------------------------------------------------------------------- */
 
 body, html {
     font-family: "Roboto", sans-serif;
 }
+
 
 /* VARIABLES  --------------------------------------------------------------------------------------------------- */
 
@@ -49,13 +51,14 @@ body, html {
     --xl: 1200px; /* A partir de 1200 */
 }
 
+
 /* ESTILOS GENERALES   ----------------------------------------------------------------------------------------- */
 
 body {
     background-color: var(--fondo);
 }
 
-h1, h2, p, ol, li, span, label {
+h1, p, ol, li, span, label {
     color: var(--negro);
 }
 
@@ -71,6 +74,13 @@ h1, h2, p, ol, li, span, label {
     @media screen and (width > 768px) {
         width: 60%;
     }
+}
+
+
+/* CLASES  ----------------------------------------------------------------------------------------------------- */
+
+.negrita {
+    font-weight: 700;
 }
 
 input.input[type="text"], input[type="search"] {
@@ -124,23 +134,61 @@ button.botonGhost {
     }
 }
 
+
+/* ITEMS DE LISTA DE TAREAS */
+
+.card {
+    /* bg-color aleatorio con DOM */
+    border-radius: 4px;
+    padding: 24px;
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 40px;
+
+    span {
+        font-family: "Roboto Flex", sans-serif;
+        line-height: 100%;
+        font-size: 2rem;
+    }
+}
+
+.botonesGestion {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+}
+
+
+/* FORMULARIO DE MODIFICAR TAREA */
+
+.formModificar {
+    border-radius: 4px;
+    padding: 24px;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+
+
 /* HEADER  ----------------------------------------------------------------------------------------------------- */
 
 header#header { 
-    div {
-        width: 100vw;
-        background-color: var(--negro);
-        padding: 12px 0;
-    
-        h1 {
-            font-family: "Limelight", sans-serif;
-            font-weight: 400;
-            color: var(--fondo);
-            text-align: center;
-            font-size: 3rem;
-        }
-    }    
-}
+    background-color: var(--negro);
+    width: 100vw;
+    padding: 12px 0;
+        
+    h1 {
+        font-family: "Limelight", sans-serif;
+        font-weight: 400;
+        color: var(--fondo);
+        text-align: center;
+        font-size: 3rem;
+    }
+}    
+
 
 /* MAIN  ------------------------------------------------------------------------------------------------------ */
 
@@ -205,7 +253,7 @@ main#main {
         p {
             font-family: "Limelight", sans-serif;
             font-weight: 400;
-            line-height: 120%;
+            line-height: 130%;
             font-size: 2rem;
         }
 
@@ -217,30 +265,19 @@ main#main {
 }
 
 
-/* DOM  --------------------------------------------------------------------------------------------------------- */
+/* FOOTER  ------------------------------------------------------------------------------------------------------ */
 
-.card {
-    /* background-color: var(--card1); */
-    border-radius: 4px;
-    padding: 24px;
-    margin: 12px 0;
+footer#footer {
+    background-color: var(--negro);
+    min-height: 20vh;
+    margin-top: 100px;
     display: flex;
-    justify-content: space-between;
-    column-gap: 20px;
-
-    span {
-        font-family: "Roboto Flex", sans-serif;
-        line-height: 100%;
-        font-size: 2rem;
+    justify-content: center;
+    align-items: center;
+    p {  
+        color: var(--blanco);
+        text-align: center;
+        font-weight: 300;
     }
 }
 
-.gestion {
-    display: flex;
-    flex-direction: column;
-    row-gap: 24px;
-}
-
-.negrita {
-    font-weight: 700;
-}

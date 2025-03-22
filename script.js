@@ -22,10 +22,10 @@ function añadirTarea () {
         let coloresFondo = ["var(--card1)", "var(--card2)", "var(--card3)", "var(--card4)",];
         let colorAleatorio = coloresFondo[Math.floor(Math.random() * coloresFondo.length)];
         /* array[Redondeo a número entero anterior (Número rándom 0 - 0.99 * 4)];
-            Por ejemplo:
-                array[Redondeo (0.8 * 4)]
-                array[Redondeo 3.2] = 3
-                array[3] es "var(--card4)" */
+        Por ejemplo:
+            array[Redondeo (0.8 * 4)]
+            array[Redondeo 3.2] = 3
+            array[3] es "var(--card4)" */
         tarea.style.backgroundColor = colorAleatorio;
 
         // Contenedor para el nombre de la tarea
@@ -40,7 +40,7 @@ function añadirTarea () {
 
         // Contenedor para los botones
         let divBotones = document.createElement("div");
-        divBotones.classList.add("gestion");
+        divBotones.classList.add("botonesGestion");
 
         let botonEliminar = crearBoton("Eliminar", divBotones);
         botonEliminar.classList.add("botonGhost");
@@ -105,8 +105,7 @@ function contadorTareas () {
     }else {
         mensajeContador.textContent = `No tienes tareas pendientes`;
     }
-
-    
+  
     // UBICAR MENSAJE
     
     let seccionTareas = document.querySelector("section#tareas");
@@ -114,6 +113,29 @@ function contadorTareas () {
     seccionTareas.replaceChild(mensajeContador, mensajeOriginal);
 }
 
+// FUNCIONES PARA LA MODIFICACIÓN DE TAREAS
+
+function deshabilitarElementos () {
+    inputTarea.disabled = true;
+    botonAñadir.disabled = true;
+    buscador.disabled = true;
+
+    let botonesGestion = lista.querySelectorAll("li div button");
+    botonesGestion.forEach(boton => {
+        boton.disabled = true;
+    });
+}
+
+function habilitarElementos () {
+    inputTarea.disabled = false;
+    botonAñadir.disabled = false;
+    buscador.disabled = false;
+
+    let botonesGestion = lista.querySelectorAll("li div button");
+    botonesGestion.forEach(boton => {
+        boton.disabled = false;
+    });
+}
 
 
 /* Selección de elementos  ------------------------------------------------------------------------------------------ */
@@ -123,6 +145,7 @@ let importante = document.querySelector("input#importante");
 let botonAñadir = document.querySelector("button#añadir");
 let buscador = document.querySelector("input[type='search']");
 let lista = document.querySelector("ol#listaTareas");
+let tareas = lista.querySelectorAll("li");
 
 
 /* AÑADIR TAREA  ===================================================================================================  */
@@ -189,10 +212,8 @@ lista.addEventListener("click", (e) => {
 
     if(e.target.innerText === "Modificar"){
 
-        // Deshabilitar elementos de añadir y buscar tareas
-        inputTarea.disabled = true;
-        botonAñadir.disabled = true;
-        buscador.disabled = true;
+        // Deshabilitar elementos mientras se modifica una tarea
+        deshabilitarElementos();
 
         // 1. SELECCIONAR ELEMENTOS
         // Seleccionar el li
@@ -203,10 +224,8 @@ lista.addEventListener("click", (e) => {
         // 2. CREAR FORM DE MODIFICACIÓN      
         let formModificar = document.createElement("form");
         // Estilo css
-        formModificar.classList.add(".anchura");
-        formModificar.style.display = "flex";
-        formModificar.style.flexDirection = "column";
-        formModificar.style.rowGap = "16px";
+        formModificar.classList.add("formModificar");
+        formModificar.style.backgroundColor = tarea.style.backgroundColor;
 
         // Input
         let inputModificar = document.createElement("input");
@@ -215,24 +234,19 @@ lista.addEventListener("click", (e) => {
         // Estilo css
         inputModificar.classList.add("input");
         
-
-        // Botones
-        let botonGuardar = document.createElement("button");
-        botonGuardar.textContent = "Guardar";
-        botonGuardar.classList.add("boton");
-        let botonCancelar = document.createElement("button");
-        botonCancelar.textContent = "Cancelar";
-        botonCancelar.classList.add("botonGhost");
-
         // Contenedor para los botones
         let divBotones = document.createElement("div");
         // Estilo css
         divBotones.style.display = "flex";
         divBotones.style.columnGap = "20px";
 
+        // Botones  
+        let botonGuardar = crearBoton("Guardar", divBotones);
+        botonGuardar.classList.add("boton");
+        let botonCancelar = crearBoton("Cancelar", divBotones);
+        botonCancelar.classList.add("botonGhost");
+
         // Ubicar input y botones
-        divBotones.appendChild(botonGuardar);
-        divBotones.appendChild(botonCancelar);
         formModificar.appendChild(inputModificar);
         formModificar.appendChild(divBotones);  
         
@@ -256,35 +270,30 @@ lista.addEventListener("click", (e) => {
                 tarea.style.display = "";
 
                 // Habilitar elementos de añadir y buscar tareas
-                inputTarea.disabled = false;
-                botonAñadir.disabled = false;
-                buscador.disabled = false;
+                habilitarElementos();
             }
         });
         // Comportamiento por defecto del formulario hace que al presionar Enter se modifique la tarea porque el botón Guardar va después del input.
 
         // Cancelar modificación
+
         botonCancelar.addEventListener("click", (e) => {
             e.preventDefault();
             formModificar.style.display = "none";
             tarea.style.display = "";
 
             // Habilitar elementos de añadir y buscar tareas
-            inputTarea.disabled = false;
-            botonAñadir.disabled = false;
-            buscador.disabled = false;
-            
+            habilitarElementos();
         });
+
         formModificar.addEventListener("keydown", (e) => {
             console.log(e);
             if(e.key === "Escape"){
                 formModificar.style.display = "none";
                 tarea.style.display = "";
 
-                // Habilitar elementos de añadir y buscar tareas
-                inputTarea.disabled = false;
-                botonAñadir.disabled = false;
-                buscador.disabled = false;                
+                // Habilitar elementos
+                habilitarElementos();              
             }
         });
     }
@@ -318,7 +327,7 @@ buscador.addEventListener("input", (e) => {
     let textoBuscador = e.target.value.trim().toLowerCase();
     let tareas = lista.querySelectorAll("li");
 
-    // Condición para mostar o no el mensaje "Sin resultados":
+    // Condición para mostar el mensaje "Sin resultados":
     let tareaEncontrada = false;
 
     // Recorrer la lista buscando coincidencias:
