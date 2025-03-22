@@ -12,11 +12,10 @@ function añadirTarea () {
     if(inputTarea.value.trim() !== ""){
         let contenidoInputTarea = inputTarea.value.trim();
 
-        // 1. CREAR LOS ELEMENTOS: tarea y botones (ubicar en div separados para poder manejarlos mejor)
+        // 1. CREAR ELEMENTOS
 
         // ITEM TAREA
         let tarea = document.createElement("li");
-        // Estilo css
         tarea.classList.add("card");
         // bgColor aleatorio
         let coloresFondo = ["var(--card1)", "var(--card2)", "var(--card3)", "var(--card4)",];
@@ -28,17 +27,16 @@ function añadirTarea () {
             array[3] es "var(--card4)" */
         tarea.style.backgroundColor = colorAleatorio;
 
-        // Contenedor para el nombre de la tarea
+        // NOMBRE TAREA
         let nombreTarea = document.createElement("span");
         nombreTarea.textContent = contenidoInputTarea;
         
-        // Tarea importante: checkbox importante (tarea en negrita)
-        // Para comprobar si un checkbox está marcado se usa la propiedad .checked (devuelve true si está marcado)
+        // TAREA IMPORTANTE (checkbox)
         if (importante.checked) {
             nombreTarea.classList.add("negrita");
         }
 
-        // Contenedor para los botones
+        // BOTONES
         let divBotones = document.createElement("div");
         divBotones.classList.add("botonesGestion");
 
@@ -54,27 +52,24 @@ function añadirTarea () {
         tarea.appendChild(nombreTarea);
         tarea.appendChild(divBotones);
         lista.insertAdjacentElement("afterbegin", tarea);
-        // La última tarea se inserta la primera en la lista para verla sin hacer scroll
 
 
         // 3. DEVOLVER FORM A SU ESTADO ORIGINAL
         inputTarea.value = "";
         importante.checked = false;
-        importante.disabled = true;       
-    }   
+        importante.disabled = true;  
+    }
 };
 
 function contadorTareas () {
 
     // TAREAS TOTALES
-
     let tareas = lista.querySelectorAll("li");
     let arrayTareas = Array.from(tareas);
     let numeroTareas = arrayTareas.length;
     // console.log("Número tareas: " + numeroTareas);
 
     // TAREAS IMPORTANTES
-
     let tareasImportantes = [];
     for(let tarea of arrayTareas){
         let nombreTarea = tarea.querySelector("span");
@@ -86,7 +81,6 @@ function contadorTareas () {
     // console.log("Tareas importantes: " + numeroTareasImportantes);
 
     // MENSAJE
-
     let mensajeContador = document.createElement("p");
     mensajeContador.classList.add("anchura");
 
@@ -106,14 +100,14 @@ function contadorTareas () {
         mensajeContador.textContent = `No tienes tareas pendientes`;
     }
   
-    // UBICAR MENSAJE
-    
+    // UBICAR MENSAJE   
     let seccionTareas = document.querySelector("section#tareas");
     let mensajeOriginal = seccionTareas.firstElementChild;
     seccionTareas.replaceChild(mensajeContador, mensajeOriginal);
 }
 
 // FUNCIONES PARA LA MODIFICACIÓN DE TAREAS
+// Para evitar que se puedan añadir o buscar tareas mientras se está modificando una tarea, deshabilitar los elementos mientras el formulario de modificación está activo. Volver a habilitarlos tras guardar o cancelar la modificación. */
 
 function deshabilitarElementos () {
     inputTarea.disabled = true;
@@ -145,48 +139,40 @@ let importante = document.querySelector("input#importante");
 let botonAñadir = document.querySelector("button#añadir");
 let buscador = document.querySelector("input[type='search']");
 let lista = document.querySelector("ol#listaTareas");
-let tareas = lista.querySelectorAll("li");
 
 
 /* AÑADIR TAREA  ===================================================================================================  */
 
-// Checkbox y botón Añadir se habilitan sólo si se ha escrito contenido en el input:
-
-inputTarea.addEventListener("input", () => { 
-    importante.disabled = true;
-    botonAñadir.disabled = true;
-    if(inputTarea.value.trim() !== ""){
+// Habilitar checkbox si hay texto válido
+inputTarea.addEventListener("input", () => {
+    if(inputTarea.value.trim() !== "" && inputTarea.value.trim() !== "No puedes guardar una tarea vacía"){
         importante.disabled = false;
-        botonAñadir.disabled = false;
     }
 });
 
-// La tarea se añade al clicar el botón "Añadir" o presionar "Enter":
-
 botonAñadir.addEventListener("click", (e) => {
-
     e.preventDefault();
-    /* El método .preventDefault() pertenece al objeto evento. Indica al navegador que no realice el comportamiento por defecto asociado al evento: en el caso de un formulario, el evento el comportamiento por defecto del button o submit es enviar y recargar la página. Sin .preventDefault() la página se recarga y desaparece el contenido dinámico añadido. */
+    /* El método .preventDefault() pertenece al objeto evento. Indica al navegador que no realice el comportamiento por defecto asociado al evento: en el caso del formulario, el comportamiento por defecto del button o submit es enviar y recargar la página. Sin .preventDefault() la página se recarga y desaparece el contenido dinámico añadido. */
 
-    añadirTarea();
+    if(inputTarea.value.trim() !== "" && inputTarea.value.trim() !== "No puedes guardar una tarea vacía"){
+        añadirTarea();
+    }else{
+        inputTarea.value = "No puedes guardar una tarea vacía";
+    }
 
-    // Permitir escribir otra tarea sin hacer focus manualmente (UX):
+    // Permitir escribir otra tarea sin hacer focus manualmente (UX)
     inputTarea.focus();
 
-    // Actualizar contador de tareas:
-    contadorTareas();
-    
+    // Actualizar contador de tareas
+    contadorTareas();   
 });
 
 inputTarea.addEventListener("keydown", (e) => {
-/* Queremos que la acción de agregar una tarea ocurra cuando el usuario está interactuando con el inputTarea, por lo que el evento keydown debe aplicarse al elemento de interacción. No se aplica a window porque queremos que Enter haga su función sólo cuando se usa el inputTarea. */
+/* Queremos que la acción agregar tarea ocurra cuando el usuario está interactuando con el inputTarea, por lo que el evento keydown debe aplicarse al elemento de interacción. No se aplica a window porque queremos que Enter haga su función sólo cuando se usa el inputTarea. */
     if(e.key === "Enter"){
         e.preventDefault();
-        /* Sin e.preventDefault(); la tarea se añade dos veces. ¿Por qué? Por un lado, al presionar Enter se ejecuta la función añadirTarea(), por otro lado el formulario está siguiendo su comportamiento por defecto (añadir tarea y recargar la página).  */
         añadirTarea();
         inputTarea.focus();
-
-        // Actualizar contador de tareas:
         contadorTareas();
     }
 });
@@ -195,12 +181,12 @@ inputTarea.addEventListener("keydown", (e) => {
 /* GESTIÓN DE TAREAS  =============================================================================================  */
 
 lista.addEventListener("click", (e) => {
-    console.log(e);
+    // console.log(e);
 
     // ELIMINAR  ==================================================================================================
     
     if(e.target.innerText === "Eliminar"){
-        // Seleccionar el li -> tarea = boton.div.li
+        // Seleccionar li -> tarea = boton.div.li
         let tarea = e.target.parentElement.parentElement;
         lista.removeChild(tarea);
 
@@ -216,31 +202,27 @@ lista.addEventListener("click", (e) => {
         deshabilitarElementos();
 
         // 1. SELECCIONAR ELEMENTOS
-        // Seleccionar el li
+        // Seleccionar li
         let tarea = e.target.parentElement.parentElement;
-        // Seleccionar el nombre de la tarea (lo había ubicado en un span)
+        // Seleccionar nombre de la tarea (lo había ubicado en un span)
         let nombreTarea = tarea.querySelector("span");
 
         // 2. CREAR FORM DE MODIFICACIÓN      
         let formModificar = document.createElement("form");
-        // Estilo css
         formModificar.classList.add("formModificar");
         formModificar.style.backgroundColor = tarea.style.backgroundColor;
 
         // Input
         let inputModificar = document.createElement("input");
         inputModificar.setAttribute("type", "text");
-        inputModificar.setAttribute("placeholder", nombreTarea.textContent);
-        // Estilo css
+        inputModificar.value = nombreTarea.textContent;
         inputModificar.classList.add("input");
         
-        // Contenedor para los botones
+        // Botones
         let divBotones = document.createElement("div");
-        // Estilo css
         divBotones.style.display = "flex";
         divBotones.style.columnGap = "20px";
-
-        // Botones  
+  
         let botonGuardar = crearBoton("Guardar", divBotones);
         botonGuardar.classList.add("boton");
         let botonCancelar = crearBoton("Cancelar", divBotones);
@@ -257,32 +239,29 @@ lista.addEventListener("click", (e) => {
         tarea.insertAdjacentElement("afterend", formModificar);
         inputModificar.focus();
         // Autofocus es una propiedad html, .focus() es un método del DOM
-        // El comportamiento que queremos darle a un nuevo elemento se debe poner después de que el elemento exista en el DOM, es decir, antes de ubicarlo
+        // El comportamiento que queremos darle a un nuevo elemento se debe poner después de que el elemento exista en el DOM, es decir, después de ubicarlo
 
         // 4. EVENTO MODIFICACIÓN
-        /* Para evitar que el usuario pueda añadir tareas o buscar mientras está modificando una tarea, deshabilitar los elementos (input, botón "Añadir" y buscador) mientras el formulario de modificación está activo. Volver a habilitarlos cuando desaparezca el formulario de modificación (tras guardar o cancelar modificación). */
         botonGuardar.addEventListener("click", (e) => {        
             e.preventDefault();
             let nuevoNombre = inputModificar.value;
-            if(nuevoNombre.trim() !== ""){
+            if(nuevoNombre.trim() !== "" && nuevoNombre.trim() !== "No puedes guardar una tarea vacía"){
                 nombreTarea.textContent = nuevoNombre;
                 formModificar.style.display = "none";
                 tarea.style.display = "";
 
-                // Habilitar elementos de añadir y buscar tareas
                 habilitarElementos();
+
+            }else{
+                inputModificar.value = "No puedes guardar una tarea vacía";
             }
         });
         // Comportamiento por defecto del formulario hace que al presionar Enter se modifique la tarea porque el botón Guardar va después del input.
-
-        // Cancelar modificación
 
         botonCancelar.addEventListener("click", (e) => {
             e.preventDefault();
             formModificar.style.display = "none";
             tarea.style.display = "";
-
-            // Habilitar elementos de añadir y buscar tareas
             habilitarElementos();
         });
 
@@ -291,8 +270,6 @@ lista.addEventListener("click", (e) => {
             if(e.key === "Escape"){
                 formModificar.style.display = "none";
                 tarea.style.display = "";
-
-                // Habilitar elementos
                 habilitarElementos();              
             }
         });
@@ -305,7 +282,6 @@ lista.addEventListener("click", (e) => {
         let nombreTarea = tarea.querySelector("span");
         nombreTarea.classList.toggle("negrita");
 
-        // Actualizar contador de tareas:
         contadorTareas();
     }
 });
@@ -323,14 +299,14 @@ mensajeSinResultados.style.display = "none";
 buscador.addEventListener("input", (e) => {
     // console.log(e);
 
-    // Seleccionar los valores a comparar (texto introducido en el buscador y tareas de la lista):
+    // Seleccionar los valores a comparar
     let textoBuscador = e.target.value.trim().toLowerCase();
     let tareas = lista.querySelectorAll("li");
 
-    // Condición para mostar el mensaje "Sin resultados":
+    // Condición para mostar el mensaje "Sin resultados"
     let tareaEncontrada = false;
 
-    // Recorrer la lista buscando coincidencias:
+    // Recorrer la lista buscando coincidencias
     tareas.forEach(tarea => {
         let nombreTarea = tarea.querySelector("span");
         if(nombreTarea.textContent.toLowerCase().includes(textoBuscador)){
@@ -341,7 +317,7 @@ buscador.addEventListener("input", (e) => {
         }
     });
 
-    if(tareaEncontrada === false && textoBuscador.trim() !== ""){
+    if(tareaEncontrada === false){
         mensajeSinResultados.style.display = "";    
     }else{
         mensajeSinResultados.style.display = "none";

@@ -27,13 +27,6 @@ input, button {
 }
 
 
-/* TIPOGRAFÍA  -------------------------------------------------------------------------------------------------- */
-
-body, html {
-    font-family: "Roboto", sans-serif;
-}
-
-
 /* VARIABLES  --------------------------------------------------------------------------------------------------- */
 
 :root {
@@ -54,7 +47,8 @@ body, html {
 
 /* ESTILOS GENERALES   ----------------------------------------------------------------------------------------- */
 
-body {
+body, html {
+    font-family: "Roboto", sans-serif;
     background-color: var(--fondo);
 }
 
@@ -83,7 +77,7 @@ h1, p, ol, li, span, label {
     font-weight: 700;
 }
 
-input.input[type="text"], input[type="search"] {
+.input {
     width: 100%;
     border: solid 1px var(--negro);
     border-radius: 4px;
@@ -94,6 +88,8 @@ input.input[type="text"], input[type="search"] {
         background-color: hsla(0, 0%, 20%, 0.1);
     }   
 }
+
+/* ESTILOS ESPECÍFICOS PARA CHECKBOX */
 
 input[type = "checkbox"] {
     border: solid 1px var(--negro);
@@ -108,7 +104,7 @@ input[type = "checkbox"] {
     }
 }
 
-button.boton {
+.boton {
     color: white;
     background-color: var(--negro);
     border: solid 2px var(--negro);
@@ -119,9 +115,17 @@ button.boton {
     &:hover {
         background-color: var(--hover);
     }
+    &:disabled {
+        background-color: var(--negro);
+        border-color: var(--negro);
+        cursor: default;
+        &:hover {
+            background-color: var(--negro);
+        }
+    }
 }
 
-button.botonGhost {
+.botonGhost {
     color: var(--negro);
     font-weight: 500;
     border: solid 2px var(--negro);
@@ -132,8 +136,14 @@ button.botonGhost {
     &:hover {
         background-color: var(--hover);
     }
+    &:disabled {
+        border-color: var(--negro);
+        cursor: default;
+        &:hover {
+            background-color: transparent;
+        }
+    }
 }
-
 
 /* ITEMS DE LISTA DE TAREAS */
 
@@ -204,7 +214,7 @@ main#main {
             flex-direction: column;
             row-gap: 16px;
 
-            /* div que agrupa div checkbox y button */
+            /* div que agrupa checkbox y botón */
             & :nth-child(2) {
                 display: flex;
                 justify-content: space-between;
@@ -228,16 +238,9 @@ main#main {
 
                 /* botón */
                 button#añadir {
-                    /* Evitar que el contenido del botón se divida en líneas */
                     white-space: nowrap;
                     width: fit-content;
-
-                    &:disabled {
-                        background-color: var(--negro);
-                        border-color: var(--negro);
-                        cursor: default;
-                    }
-                }  
+                }
             }
         }
     }
@@ -245,7 +248,6 @@ main#main {
     /* LISTA DE TAREAS  --------------------------------------------------------------------------------------- */
 
     section#tareas {
-
         display: flex;
         flex-direction: column;
         row-gap: 20px;
