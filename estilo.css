@@ -32,12 +32,6 @@ body, html {
     font-family: "Roboto", sans-serif;
 }
 
-h1, h2 {
-    font-family: "Limelight", sans-serif;
-    font-weight: 400;
-    line-height: 100%;
-}
-
 /* VARIABLES  --------------------------------------------------------------------------------------------------- */
 
 :root {
@@ -79,7 +73,7 @@ h1, h2, p, ol, li, span, label {
     }
 }
 
-.input[type="text"], input[type="search"] {
+input.input[type="text"], input[type="search"] {
     width: 100%;
     border: solid 1px var(--negro);
     border-radius: 4px;
@@ -104,7 +98,7 @@ input[type = "checkbox"] {
     }
 }
 
-.boton {
+button.boton {
     color: white;
     background-color: var(--negro);
     border: solid 2px var(--negro);
@@ -117,7 +111,7 @@ input[type = "checkbox"] {
     }
 }
 
-.botonGhost {
+button.botonGhost {
     color: var(--negro);
     font-weight: 500;
     border: solid 2px var(--negro);
@@ -132,13 +126,16 @@ input[type = "checkbox"] {
 
 /* HEADER  ----------------------------------------------------------------------------------------------------- */
 
-header#header {  
+header#header { 
     div {
         width: 100vw;
         background-color: var(--negro);
         padding: 12px 0;
     
         h1 {
+            font-family: "Limelight", sans-serif;
+            font-weight: 400;
+            line-height: 100%;
             color: var(--fondo);
             text-align: center;
             font-size: 3rem;
@@ -153,7 +150,6 @@ main#main {
     /* AÑADIR TAREA  ------------------------------------------------------------------------------------------ */
 
     section#añadirTarea {
-
         margin: 40px 0;
 
         form {
@@ -207,8 +203,16 @@ main#main {
         flex-direction: column;
         row-gap: 20px;
 
-        h2 {
+        p {
+            font-family: "Limelight", sans-serif;
+            font-weight: 400;
+            line-height: 100%;
             font-size: 2rem;
+        }
+
+        /* Ocultar botón (x) que aparece en el buscador por defecto */
+        input[type="search"]::-webkit-search-cancel-button {
+            display: none; 
         }
     }   
 }
@@ -217,7 +221,7 @@ main#main {
 /* DOM  --------------------------------------------------------------------------------------------------------- */
 
 .card {
-    background-color: var(--card1);
+    /* background-color: var(--card1); */
     border-radius: 4px;
     padding: 24px;
     margin: 12px 0;

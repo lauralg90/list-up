@@ -18,12 +18,21 @@ function añadirTarea () {
         let tarea = document.createElement("li");
         // Estilo css
         tarea.classList.add("card");
+        // bgColor aleatorio
+        let coloresFondo = ["var(--card1)", "var(--card2)", "var(--card3)", "var(--card4)",];
+        let colorAleatorio = coloresFondo[Math.floor(Math.random() * coloresFondo.length)];
+        /* array[Redondeo a número entero anterior (Número rándom 0 - 0.99 * 4)];
+            Por ejemplo:
+                array[Redondeo (0.8 * 4)]
+                array[Redondeo 3.2] = 3
+                array[3] es "var(--card4)" */
+        tarea.style.backgroundColor = colorAleatorio;
 
         // Contenedor para el nombre de la tarea
         let nombreTarea = document.createElement("span");
         nombreTarea.textContent = contenidoInputTarea;
         
-        // Si se marca la tarea como importante aparecerá en negrita
+        // Tarea importante: checkbox importante (tarea en negrita)
         // Para comprobar si un checkbox está marcado se usa la propiedad .checked (devuelve true si está marcado)
         if (importante.checked) {
             nombreTarea.classList.add("negrita");
@@ -51,13 +60,76 @@ function añadirTarea () {
         // 3. DEVOLVER FORM A SU ESTADO ORIGINAL
         inputTarea.value = "";
         importante.checked = false;
-        importante.disabled = true;
+        importante.disabled = true;       
     }   
 };
 
+function contadorTareas () {
+
+    // TAREAS TOTALES
+
+    // Identificar todas las tareas de la lista
+    let tareas = lista.querySelectorAll("li");
+    let arrayTareas = Array.from(tareas);
+    let numeroTareas = arrayTareas.length;
+    // console.log("Número tareas: " + numeroTareas);
+
+    // Mensaje
+    let mensajeContador = document.createElement("p");
+    mensajeContador.classList.add("anchura");
+    if(numeroTareas === 1){
+        mensajeContador.textContent = `${numeroTareas} tarea pendiente`;
+    }else if(numeroTareas > 1){
+        mensajeContador.textContent = `${numeroTareas} tareas pendientes`;
+    }else{
+        mensajeContador.textContent = `No tienes tareas pendientes`;
+    }
+
+    // TAREAS IMPORTANTES
+    
+    // Identificar y recoger tareas importantes
+    let tareasImportantes = [];
+    for(let tarea of arrayTareas){
+        let nombreTarea = tarea.querySelector("span");
+        if(nombreTarea.classList.contains("negrita")){
+            tareasImportantes.push(tarea);
+        }
+    }
+    let numeroTareasImportantes = tareasImportantes.length;
+    // console.log("Tareas importantes: " + numeroTareasImportantes);
+
+    // Mensaje
+    let mensajeContadorImportantes = document.createElement("p");
+    mensajeContadorImportantes.classList.add("anchura");
+    if(numeroTareasImportantes === 1){
+        mensajeContadorImportantes.textContent = `${numeroTareasImportantes} tarea pendiente`;
+    }else if(numeroTareasImportantes > 1){
+        mensajeContadorImportantes.textContent = `${numeroTareasImportantes} tareas pendientes`;
+    }else{
+        mensajeContadorImportantes.textContent = `No hay importantes.`;
+    }
+
+    // UBICAR MENSAJES
+
+    // Agrupar mensajes en un div
+    let divContador = document.createElement("div");
+    divContador.appendChild(mensajeContador);
+    divContador.appendChild(mensajeContadorImportantes);
+    
+    let seccionTareas = document.querySelector("section#tareas");
+    let mensajeSinTareas = seccionTareas.firstElementChild;
+    seccionTareas.appendChild(divContador);
+
+    if(numeroTareas !== 0){ 
+        mensajeSinTareas.style.display = "none"; 
+    }else{
+        mensajeSinTareas.style.display = "";
+    }
+}
 
 
-/* Selección de elementos recurrentes  ------------------------------------------------------------------------------ */
+
+/* Selección de elementos  ------------------------------------------------------------------------------------------ */
 
 let inputTarea = document.querySelector("input[name='tarea']");
 let importante = document.querySelector("input#importante");
@@ -68,7 +140,8 @@ let lista = document.querySelector("ol#listaTareas");
 
 /* AÑADIR TAREA  ===================================================================================================  */
 
-// El checkbox se habilita sólo si se ha escrito contenido en el input:
+// Checkbox y botón Añadir se habilitan sólo si se ha escrito contenido en el input:
+
 inputTarea.addEventListener("input", () => { 
     importante.disabled = true;
     botonAñadir.disabled = true;
@@ -81,11 +154,18 @@ inputTarea.addEventListener("input", () => {
 // La tarea se añade al clicar el botón "Añadir" o presionar "Enter":
 
 botonAñadir.addEventListener("click", (e) => {
+
     e.preventDefault();
-    /* El método .preventDefault() pertenece al objeto evento. Al aplicar el método indicamos al navegador que no realice el comportamiento por defecto asociado al evento: en el caso de un formulario, el evento al clicar el button o input[submit] es enviar y recargar la página. Sin .preventDefault() la página se recarga al clicar el botón y desaparece el contenido dinámico añadido. */   
+    /* El método .preventDefault() pertenece al objeto evento. Indica al navegador que no realice el comportamiento por defecto asociado al evento: en el caso de un formulario, el evento el comportamiento por defecto del button o submit es enviar y recargar la página. Sin .preventDefault() la página se recarga y desaparece el contenido dinámico añadido. */
+
     añadirTarea();
+
+    // Permitir escribir otra tarea sin hacer focus manualmente (UX):
     inputTarea.focus();
-    /* Una vez añadida la tarea el foco sigue en el inputTarea, permitiendo escribir y añadir otra tarea sin necesidad de hacer focus manualmente, mejorando la experiencia de usuario. */
+
+    // Actualizar contador de tareas:
+    contadorTareas();
+    
 });
 
 inputTarea.addEventListener("keydown", (e) => {
@@ -95,14 +175,11 @@ inputTarea.addEventListener("keydown", (e) => {
         /* Sin e.preventDefault(); la tarea se añade dos veces. ¿Por qué? Por un lado, al presionar Enter se ejecuta la función añadirTarea(), por otro lado el formulario está siguiendo su comportamiento por defecto (añadir tarea y recargar la página).  */
         añadirTarea();
         inputTarea.focus();
+
+        // Actualizar contador de tareas:
+        contadorTareas();
     }
 });
-
-
-/* CONTADOR DE TAREAS  ============================================================================================  */
-
-// "Tienes 12 tareas pendientes" Ubicar al lado del título "Mi lista de tareas"
-// Debe actualizarse al añadir y eliminar tareas
 
 
 /* GESTIÓN DE TAREAS  =============================================================================================  */
@@ -116,6 +193,9 @@ lista.addEventListener("click", (e) => {
         // Seleccionar el li -> tarea = boton.div.li
         let tarea = e.target.parentElement.parentElement;
         lista.removeChild(tarea);
+
+        // Actualizar contador de tareas:
+        contadorTareas();
     }
 
     // MODIFICAR  =================================================================================================
@@ -262,12 +342,14 @@ buscador.addEventListener("input", (e) => {
         }
     });
 
-    if(tareaEncontrada === false){
+    if(tareaEncontrada === false && textoBuscador.trim() !== ""){
         mensajeSinResultados.style.display = "";    
     }else{
         mensajeSinResultados.style.display = "none";
     } 
 });
+
+
 
 
 
