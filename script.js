@@ -68,26 +68,13 @@ function contadorTareas () {
 
     // TAREAS TOTALES
 
-    // Identificar todas las tareas de la lista
     let tareas = lista.querySelectorAll("li");
     let arrayTareas = Array.from(tareas);
     let numeroTareas = arrayTareas.length;
     // console.log("Número tareas: " + numeroTareas);
 
-    // Mensaje
-    let mensajeContador = document.createElement("p");
-    mensajeContador.classList.add("anchura");
-    if(numeroTareas === 1){
-        mensajeContador.textContent = `${numeroTareas} tarea pendiente`;
-    }else if(numeroTareas > 1){
-        mensajeContador.textContent = `${numeroTareas} tareas pendientes`;
-    }else{
-        mensajeContador.textContent = `No tienes tareas pendientes`;
-    }
-
     // TAREAS IMPORTANTES
-    
-    // Identificar y recoger tareas importantes
+
     let tareasImportantes = [];
     for(let tarea of arrayTareas){
         let nombreTarea = tarea.querySelector("span");
@@ -98,33 +85,33 @@ function contadorTareas () {
     let numeroTareasImportantes = tareasImportantes.length;
     // console.log("Tareas importantes: " + numeroTareasImportantes);
 
-    // Mensaje
-    let mensajeContadorImportantes = document.createElement("p");
-    mensajeContadorImportantes.classList.add("anchura");
-    if(numeroTareasImportantes === 1){
-        mensajeContadorImportantes.textContent = `${numeroTareasImportantes} tarea pendiente`;
-    }else if(numeroTareasImportantes > 1){
-        mensajeContadorImportantes.textContent = `${numeroTareasImportantes} tareas pendientes`;
-    }else{
-        mensajeContadorImportantes.textContent = `No hay importantes.`;
+    // MENSAJE
+
+    let mensajeContador = document.createElement("p");
+    mensajeContador.classList.add("anchura");
+
+    if(numeroTareas === 1 && numeroTareasImportantes === 0){
+        mensajeContador.textContent = `${numeroTareas} tarea pendiente`;
+    }else if(numeroTareas === 1 && numeroTareasImportantes === 1){
+        mensajeContador.textContent = `${numeroTareasImportantes} tarea importante`;
+    }else if(numeroTareas > 1 && numeroTareasImportantes === 0){
+        mensajeContador.textContent = `${numeroTareas} tareas pendientes`;
+    }else if(numeroTareas > 1 && numeroTareasImportantes === 1){
+        mensajeContador.innerHTML = `${numeroTareas} tareas pendientes<br>
+        ${numeroTareasImportantes} tarea importante`;
+    }else if(numeroTareas > 1 && numeroTareasImportantes > 1){
+        mensajeContador.innerHTML = `${numeroTareas} tareas pendientes<br>
+        ${numeroTareasImportantes} tareas importantes`;
+    }else {
+        mensajeContador.textContent = `No tienes tareas pendientes`;
     }
 
-    // UBICAR MENSAJES
-
-    // Agrupar mensajes en un div
-    let divContador = document.createElement("div");
-    divContador.appendChild(mensajeContador);
-    divContador.appendChild(mensajeContadorImportantes);
+    
+    // UBICAR MENSAJE
     
     let seccionTareas = document.querySelector("section#tareas");
-    let mensajeSinTareas = seccionTareas.firstElementChild;
-    seccionTareas.appendChild(divContador);
-
-    if(numeroTareas !== 0){ 
-        mensajeSinTareas.style.display = "none"; 
-    }else{
-        mensajeSinTareas.style.display = "";
-    }
+    let mensajeOriginal = seccionTareas.firstElementChild;
+    seccionTareas.replaceChild(mensajeContador, mensajeOriginal);
 }
 
 
@@ -308,6 +295,9 @@ lista.addEventListener("click", (e) => {
         let tarea = e.target.parentElement.parentElement;
         let nombreTarea = tarea.querySelector("span");
         nombreTarea.classList.toggle("negrita");
+
+        // Actualizar contador de tareas:
+        contadorTareas();
     }
 });
 
