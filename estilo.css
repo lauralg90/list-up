@@ -12,6 +12,7 @@ ul, ol, li {
 
 html, body {
     font-size: 16px;
+    height: 100%;
 }
 
 input, button {
@@ -50,6 +51,11 @@ input, button {
 body, html {
     font-family: "Roboto", sans-serif;
     background-color: var(--fondo);
+    height: 100%;   
+}
+
+body {
+    min-height: 100vh;
 }
 
 h1, p, ol, li, span, label {
@@ -203,7 +209,8 @@ header#header {
 /* MAIN  ------------------------------------------------------------------------------------------------------ */
 
 main#main {
-
+    min-height: 100vh;
+    
     /* AÑADIR TAREA  ------------------------------------------------------------------------------------------ */
 
     section#añadirTarea {
@@ -270,8 +277,8 @@ main#main {
 /* FOOTER  ------------------------------------------------------------------------------------------------------ */
 
 footer#footer {
-    background-color: var(--negro);
     min-height: 20vh;
+    background-color: var(--negro);
     margin-top: 100px;
     display: flex;
     justify-content: center;
@@ -282,4 +289,3 @@ footer#footer {
         font-weight: 300;
     }
 }
-
